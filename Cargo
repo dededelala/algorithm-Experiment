@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct cargo
+{
+    double weight;
+    double value;
+    double average;
+}A[100000];
+
+
+
+void mergeSort(struct cargo a[],int left,int right)
+{
+    void merge(struct cargo a[],int left,int right);
+    int i;
+    // 保证至少有两个元素
+    if(left < right)
+    {
+        i = (left+right)/2;
+        mergeSort(a,left,i);
+        mergeSort(a,i+1,right);
+        merge(a,left,right);
+    }
+}
+
+void merge(struct cargo a[],int left,int right)
+{
+    void copyArray(struct cargo source[], struct cargo dest[],int len,int first);
+    int begin1 = left;
+    int mid = (left+right)/2 ;
+    int begin2 = mid+1;
+    int k=0;
+    int newArrayLen = right-left+1;
+    struct cargo *b = (struct cargo*)malloc(newArrayLen*sizeof(struct cargo));
+    while(begin1<=mid && begin2<=right)
+    {
+        if(a[begin1].average<=a[begin2].average)
+            b[k++] = a[begin1++];
+        else
+            b[k++] = a[begin2++];
+    }
+    while(begin1<=mid)
+        b[k++] = a[begin1++];
+    while(begin2<=right)
+        b[k++] = a[begin2++];
+    copyArray(b,a,newArrayLen,left);
+    free(b);
+}
+void copyArray(struct cargo source[], struct cargo dest[],int len,int first)
+{
+    int i;
+    int j=first;
+    for(i=0;i<len;i++)
+    {
+        dest[j] = source[i];
+        j++;
+    }
+
+}
+int main()
+{
+    double w;
+    int n;
+    double v=0;
+    int i,j;
+    scanf("%lf %d",&w,&n);
+    for(i=1;i<=n;i++)
+    {
+        scanf("%lf %lf",&A[i].weight,&A[i].value);
+        A[i].average=A[i].value/A[i].weight;
+    }
+    mergeSort(A,1,n);
+    for(i=n;i>=1;i--)
+    {
+
+            if(w-A[i].weight>=0)
+            {
+                w-=A[i].weight;
+                v+=A[i].value;
+            }
+            else
+            {
+                v+=A[i].average*w;
+                w=0;
+                break;
+
+            }
+
+    }
+    printf("%.6lf",v);
+}
