@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int cost[6]={500,100,50,10,5,1};
+
+int main()
+{
+    int n;
+    int rest;
+    scanf("%d",&n);
+    int num[6];
+    for(int i=0;i<6;i++)
+        scanf("%d",&num[i]);
+    int count=0;
+    rest=1000-n*25;
+    for(int i=0;i<6;i++)
+    {
+        while(num[i]&&rest-cost[i]>=0)
+        {
+            num[i]--;
+            rest-=cost[i];
+            count++;
+        }
+    }
+    if(rest)
+		printf("-1\n");
+	else
+		printf("%d\n",count);
+	return 0;
+}
