@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Girl
+{
+    char name[16];
+    int starth,startm,finishh,finishm,start,finish;
+
+};
+
+int A[1000];
+int k=2;
+
+void GreedySelect(struct Girl mm[],int n)
+{
+    A[1]=1;
+    int i=1;
+    for(int m=2;m<=n;m++)
+    {
+        if(mm[m].start>=mm[i].finish)
+        {
+            A[k++]=m;
+            i=m;
+        }
+    }
+    k--;
+}
+int main()
+{
+    struct Girl girl[1000];
+    void GreedySelect(struct Girl girl[],int n);
+    int n,i,j;
+    struct Girl temp;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%s %d:%d %d:%d",girl[i].name,&girl[i].starth,&girl[i].startm,&girl[i].finishh,&girl[i].finishm);
+        girl[i].start=girl[i].starth*100+girl[i].startm;
+        girl[i].finish=girl[i].finishh*100+girl[i].finishm;
+    }
+    for(i=1;i<=n-1;i++)
+    {
+        for(j=i+1;j<=n;j++)
+        {
+            if(girl[i].finish>girl[j].finish)
+            {
+                temp=girl[i];
+                girl[i]=girl[j];
+                girl[j]=temp;
+            }
+
+        }
+    }
+    GreedySelect(girl,n);
+    printf("%d\n",k);
+    for(i=1;i<=k-1;i++)
+    {
+        printf("%s ",girl[A[i]].name);
+    }
+    printf("%s\n",girl[A[k]].name);
+}
